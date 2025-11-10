@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:studio_app/presentation/bankscreen.dart';
+import 'package:studio_app/presentation/contactscreen.dart';
 import '../presentation/Splash.dart';
+import '../presentation/profilescreen.dart';
 import '../services/AuthService.dart';
 import '../utils/CrashlyticsNavObserver.dart';
 
@@ -18,7 +21,23 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(SplashScreen(), state);
+        return buildSlideTransitionPage(Profile(), state);
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Profile(), state);
+      },
+    ), GoRoute(
+      path: '/contact',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Contact(), state);
+      },
+    ), GoRoute(
+      path: '/bankdetails',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(BankDetails(), state);
       },
     ),
   ],
