@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../presentation/Splash.dart';
 import '../services/AuthService.dart';
 import '../utils/CrashlyticsNavObserver.dart';
 
@@ -16,9 +17,9 @@ final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      // pageBuilder: (context, state) {
-      //   return buildSlideTransitionPage(SplashScreen(), state);
-      // },
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(SplashScreen(), state);
+      },
     ),
   ],
   errorBuilder: (context, state) {
