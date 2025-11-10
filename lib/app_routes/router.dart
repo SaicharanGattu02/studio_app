@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../presentation/Splash.dart';
+import 'package:studio_app/presentation/LogginIn.dart';
+import 'package:studio_app/presentation/sign_in_screen.dart';
+import 'package:studio_app/presentation/splash_screen.dart';
 import '../services/AuthService.dart';
 import '../utils/CrashlyticsNavObserver.dart';
 
@@ -18,9 +20,22 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(SplashScreen(), state);
+        return buildSlideTransitionPage(SplashScreen2(), state);
       },
     ),
+    GoRoute(
+      path: '/second-splash',
+      builder: (context, state) => const SecondSplashScreen(),
+    ),
+    GoRoute(
+      path: '/signin',
+      builder: (context, state) =>  SignInScreen(),
+    ),
+    GoRoute(
+      path: '/logging',
+      builder: (context, state) =>  Logging(),
+    ),
+
   ],
   errorBuilder: (context, state) {
     final err = state.error ?? 'Unknown router error';
