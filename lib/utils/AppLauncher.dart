@@ -1,5 +1,6 @@
-import 'package:mentivisor/utils/AppLogger.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'AppLogger.dart';
 
 class AppLauncher {
   static Future<void> call(String phoneNumber) async {
