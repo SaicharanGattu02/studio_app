@@ -21,6 +21,7 @@ class SizeConfig {
     return blockWidth * percent;
   }
 
+
   // Get height as percentage
   static double height(double percent) {
     return blockHeight * percent;
