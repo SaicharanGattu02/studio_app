@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studio_app/presentation/bankscreen.dart';
 import 'package:studio_app/presentation/contactscreen.dart';
+import 'package:studio_app/presentation/createclient.dart';
+import 'package:studio_app/presentation/stats.dart';
 import '../presentation/profilescreen.dart';
 import 'package:studio_app/presentation/LogginIn.dart';
 import 'package:studio_app/presentation/sign_in_screen.dart';
@@ -23,7 +25,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Profile(), state);
+        return buildSlideTransitionPage(Createclient(), state);
+      },
+    ),GoRoute(
+      path: '/stats',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Stats(), state);
       },
     ),
     GoRoute(
