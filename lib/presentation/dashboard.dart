@@ -157,9 +157,9 @@ class _DashboardState extends State<Dashboard> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       selectedItemColor: primarycolor,
-      unselectedItemColor: Colors.black,
+      unselectedItemColor: Color(0xffC8C8C8),
       showSelectedLabels: true,
       showUnselectedLabels: true,
       elevation: 0,

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:studio_app/presentation/ScreenWidgets/EventCard.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
@@ -105,7 +106,9 @@ class _HomeState extends State<Home> {
                 shape: WidgetStateProperty.all(const CircleBorder()),
                 padding: WidgetStateProperty.all(const EdgeInsets.all(8)),
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.push('/notifications');
+              },
               icon: const Icon(Icons.notifications, color: Color(0xffB3B8C0)),
             ),
           ),
@@ -215,7 +218,9 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/create_client');
+                  },
                   child: Text(
                     "Create Client",
                     style: TextStyle(

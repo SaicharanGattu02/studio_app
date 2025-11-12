@@ -31,21 +31,21 @@ class _StatsState extends State<Stats> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            Text(
-            title,
-            style:   TextStyle(
-              color: isThirdLine ? Colors.white : const Color(0xffFEBE01),
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            value,
-            style:  TextStyle(
-              color: isThirdLine ? const Color(0xffFEBE01) : Colors.white,
-              fontSize: 15,
-            ),
-          ),
+              Text(
+                title,
+                style: TextStyle(
+                  color: isThirdLine ? Colors.white : const Color(0xffFEBE01),
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                value,
+                style: TextStyle(
+                  color: isThirdLine ? const Color(0xffFEBE01) : Colors.white,
+                  fontSize: 15,
+                ),
+              ),
             ],
           ),
         ),
@@ -63,11 +63,16 @@ class _StatsState extends State<Stats> {
     );
   }
 
-  Widget _clientBox(String title, String value,
-      {required String path, bool isYellow = false}) {
-    return Container(height: SizeConfig.screenHeight*0.11,
+  Widget _clientBox(
+    String title,
+    String value, {
+    required String path,
+    bool isYellow = false,
+  }) {
+    return Container(
+      height: SizeConfig.screenHeight * 0.11,
       color: isYellow ? primarycolor : whiteColor,
-      padding:  EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,7 +103,12 @@ class _StatsState extends State<Stats> {
   }
 
   Widget _earningItem(
-      String name, String event, String date, String tag, Color tagColor) {
+    String name,
+    String event,
+    String date,
+    String tag,
+    Color tagColor,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.all(10),
@@ -113,13 +123,12 @@ class _StatsState extends State<Stats> {
             radius: 22,
             child: Text(
               name[0],
-              style:  const TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
               ),
-
             ),
           ),
           const SizedBox(width: 12),
@@ -127,23 +136,23 @@ class _StatsState extends State<Stats> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name,  style:const TextStyle(fontSize: 15,color: Colors.white)),
-                Text("$event\nJoined on $date",
-                    style: TextStyle(
-                        color: greyColor, fontSize: 12, height: 1.3,),
+                Text(name, style: TextStyle(fontSize: 15, color: Colors.white)),
+                Text(
+                  "$event\nJoined on $date",
+                  style: TextStyle(color: greyColor, fontSize: 12, height: 1.3),
                 ),
               ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 14),
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 14),
             decoration: BoxDecoration(
               color: tagColor,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               tag,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 color: Color(0xff594300),
                 fontSize: 12,
@@ -156,11 +165,10 @@ class _StatsState extends State<Stats> {
     );
   }
 
-  // ================== Withdrawal Item (New Design) ==================
   Widget _withdrawalItem(String month, String date, String upi, String amount) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(40),
@@ -194,7 +202,7 @@ class _StatsState extends State<Stats> {
                 ),
                 Text(
                   "Credit on $date\n in UPI ID $upi",
-                  style:const TextStyle(
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
                     height: 1.3,
@@ -216,10 +224,7 @@ class _StatsState extends State<Stats> {
               ),
               Text(
                 amount,
-                style:const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ],
           ),
@@ -265,8 +270,11 @@ class _StatsState extends State<Stats> {
                   _statsCard("Total Earnings", "5,00,000"),
                   _statsCard("Commission Received", "3,00,000"),
                   _statsCard("Pending Withdrawals", "2,00,000"),
-                  _statsCard("This Month Earnings", "50,000",
-                      showBorder: false),
+                  _statsCard(
+                    "This Month Earnings",
+                    "50,000",
+                    showBorder: false,
+                  ),
                 ],
               ),
             ),
@@ -285,48 +293,70 @@ class _StatsState extends State<Stats> {
             const SizedBox(height: 15),
 
             Container(
-              width:SizeConfig.screenWidth,
+              width: SizeConfig.screenWidth,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),border: Border.all(color:Colors.transparent)
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.transparent),
               ),
               child: Column(
                 children: [
                   Row(
                     children: [
                       Expanded(
-                        child: _clientBox("Base Plan", "20000",
-                            path: 'assets/icons/Database.svg',
-                            isYellow: false),
+                        child: _clientBox(
+                          "Base Plan",
+                          "20000",
+                          path: 'assets/icons/Database.svg',
+                          isYellow: false,
+                        ),
                       ),
                       Expanded(
-                        child: _clientBox("Standard", "50000",
-                            path: 'assets/icons/moon.svg',
-                            isYellow: true),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _clientBox("Advance", "11000",
-                            path: 'assets/icons/CrownSimple.svg', isYellow: true),
-                      ),
-                      Expanded(
-                        child: _clientBox("Premium", "15486",
-                            path: 'assets/icons/Crown.svg', isYellow: false),
+                        child: _clientBox(
+                          "Standard",
+                          "50000",
+                          path: 'assets/icons/moon.svg',
+                          isYellow: true,
+                        ),
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       Expanded(
-                        child: _clientBox("Elite", "15000",
-                            path: 'assets/icons/CrownCross.svg',
-                            isYellow: false),
+                        child: _clientBox(
+                          "Advance",
+                          "11000",
+                          path: 'assets/icons/CrownSimple.svg',
+                          isYellow: true,
+                        ),
                       ),
                       Expanded(
-                        child: _clientBox("Total Client", "25",
-                            path: 'assets/icons/Users.svg', isYellow: true),
+                        child: _clientBox(
+                          "Premium",
+                          "15486",
+                          path: 'assets/icons/Crown.svg',
+                          isYellow: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _clientBox(
+                          "Elite",
+                          "15000",
+                          path: 'assets/icons/CrownCross.svg',
+                          isYellow: false,
+                        ),
+                      ),
+                      Expanded(
+                        child: _clientBox(
+                          "Total Client",
+                          "25",
+                          path: 'assets/icons/Users.svg',
+                          isYellow: true,
+                        ),
                       ),
                     ],
                   ),
@@ -347,7 +377,7 @@ class _StatsState extends State<Stats> {
                         "Earning History",
                         style: TextStyle(
                           fontFamily: 'Inter',
-                          color:whiteColor,
+                          color: whiteColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
@@ -370,7 +400,7 @@ class _StatsState extends State<Stats> {
                         "Withdrawal History",
                         style: TextStyle(
                           fontFamily: 'Inter',
-                          color:whiteColor,
+                          color: whiteColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
@@ -391,20 +421,65 @@ class _StatsState extends State<Stats> {
 
             // ---------- Conditional List ----------
             if (showEarnings) ...[
-              _earningItem("Abhi", "Wedding Event", "24 Jul 25", "Premium",
-                  Color(0xff6BE40E)),
               _earningItem(
-                  "Sai", "Birthday Event", "12 Aug 25", "Basic", Color(0xff00DEB2)),
-              _earningItem("Raju", "Corporate Event", "09 Sep 25", "Standard",
-                  Color(0xffEFB805)),
-              _earningItem("Kumar", "Wedding Event", "24 Oct 25", "Advance",
-                  Color(0xffC3FE01)),
+                "Abhi",
+                "Wedding Event",
+                "24 Jul 25",
+                "Premium",
+                Color(0xff6BE40E),
+              ),
+              _earningItem(
+                "Sai",
+                "Birthday Event",
+                "12 Aug 25",
+                "Basic",
+                Color(0xff00DEB2),
+              ),
+              _earningItem(
+                "Raju",
+                "Corporate Event",
+                "09 Sep 25",
+                "Standard",
+                Color(0xffEFB805),
+              ),
+              _earningItem(
+                "Kumar",
+                "Wedding Event",
+                "24 Oct 25",
+                "Advance",
+                Color(0xffC3FE01),
+              ),
             ] else ...[
-              _withdrawalItem("January", "25 Jan 25", "9123654@hdfcbank", "50000"),
-              _withdrawalItem("February", "25 Feb 25", "9123654@hdfcbank", "54645"),
-              _withdrawalItem("March", "25 Mar 25", "9123654@hdfcbank", "354682"),
-              _withdrawalItem("April", "25 Apr 25", "9123654@hdfcbank", "854684"),
-              _withdrawalItem("May", "25 May 25", "9123654@hdfcbank", "6516545"),
+              _withdrawalItem(
+                "January",
+                "25 Jan 25",
+                "9123654@hdfcbank",
+                "50000",
+              ),
+              _withdrawalItem(
+                "February",
+                "25 Feb 25",
+                "9123654@hdfcbank",
+                "54645",
+              ),
+              _withdrawalItem(
+                "March",
+                "25 Mar 25",
+                "9123654@hdfcbank",
+                "354682",
+              ),
+              _withdrawalItem(
+                "April",
+                "25 Apr 25",
+                "9123654@hdfcbank",
+                "854684",
+              ),
+              _withdrawalItem(
+                "May",
+                "25 May 25",
+                "9123654@hdfcbank",
+                "6516545",
+              ),
             ],
           ],
         ),
