@@ -3,9 +3,23 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../presentation/Splash.dart';
-import '../presentation/dashboard.dart';
+import 'package:studio_app/presentation/bankscreen.dart';
+import 'package:studio_app/presentation/client_details_screen.dart';
+import 'package:studio_app/presentation/clients_screen.dart';
+import 'package:studio_app/presentation/contactscreen.dart';
+import 'package:studio_app/presentation/otp_screen.dart';
+import 'package:studio_app/presentation/upload_pictures.dart';
+import 'package:studio_app/presentation/createclient.dart';
+import 'package:studio_app/presentation/stats.dart';
+import '../presentation/profilescreen.dart';
+import 'package:studio_app/presentation/LogginIn.dart';
+import 'package:studio_app/presentation/sign_in_screen.dart';
+import 'package:studio_app/presentation/splash_screen.dart';
+import '../presentation/sucess_screen.dart';
+import '../services/AuthService.dart';
+import '../utils/CrashlyticsNavObserver.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -16,17 +30,73 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(ClientsScreen(), state);
       },
     ),
     GoRoute(
-      path: '/dashboard',
+      path: '/otp-screen',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Dashboard(), state);
+        return buildSlideTransitionPage(ClientsScreen(), state);
       },
     ),
-  ],
+    GoRoute(
+      path: '/clients-screen',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(ClientsScreen(), state);
+        return buildSlideTransitionPage(Createclient(), state);
+      },
+    ),GoRoute(
+      path: '/stats',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Stats(), state);
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Profile(), state);
+      },
+    ), GoRoute(
+      path: '/contact',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Contact(), state);
+      },
+    ), GoRoute(
+      path: '/bankdetails',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(BankDetails(), state);
+        return buildSlideTransitionPage(SplashScreen2(), state);
+      },
+    ),
+    GoRoute(
+      path: '/second-splash',
+      builder: (context, state) => const SecondSplashScreen(),
+    ),
+    GoRoute(
+      path: '/signin',
+      builder: (context, state) =>  SignInScreen(),
+    ),
+    GoRoute(
+      path: '/logging',
+      builder: (context, state) =>  Logging(),
+    ),
+    GoRoute(
+      path: '/client-details-screen',
+      builder: (context, state) =>  ClientDetailsScreen(),
+    ),
+    GoRoute(
+      path: '/upload-pictures',
+      builder: (context, state) =>  UploadPictures(),
+    ),
+    GoRoute(
+      path: '/success',
+      builder: (context, state) {
+        final String message = state.extra as String;
+        return SucessScreen(text: message);
+      },
+    ),
 
+  ],
   errorBuilder: (context, state) {
     final err = state.error ?? 'Unknown router error';
     FirebaseCrashlytics.instance.recordError(

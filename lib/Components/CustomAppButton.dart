@@ -52,7 +52,7 @@ class CustomAppButton1 extends StatelessWidget {
         ),
         child: Ink(
           decoration: BoxDecoration(
-            gradient: kCommonGradient,
+            color: primarycolor,
             borderRadius: BorderRadius.circular(borderRadius.toDouble()),
           ),
           child: Container(
@@ -75,8 +75,8 @@ class CustomAppButton1 extends StatelessWidget {
                   Text(
                     text,
                     style: TextStyle(
-                      color: textColor,
-                      fontFamily: 'segeo',
+                      color: Color(0xff333333),
+                      fontFamily: 'Inter',
                       fontSize: textSize??16,
                       fontWeight: FontWeight.w600,
                     ),
