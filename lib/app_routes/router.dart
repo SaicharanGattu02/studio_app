@@ -6,13 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studio_app/presentation/bankscreen.dart';
+import 'package:studio_app/presentation/client_details_screen.dart';
+import 'package:studio_app/presentation/clients_screen.dart';
 import 'package:studio_app/presentation/contactscreen.dart';
+import 'package:studio_app/presentation/otp_screen.dart';
+import 'package:studio_app/presentation/upload_pictures.dart';
 import 'package:studio_app/presentation/createclient.dart';
 import 'package:studio_app/presentation/stats.dart';
 import '../presentation/profilescreen.dart';
 import 'package:studio_app/presentation/LogginIn.dart';
 import 'package:studio_app/presentation/sign_in_screen.dart';
 import 'package:studio_app/presentation/splash_screen.dart';
+import '../presentation/sucess_screen.dart';
 import '../services/AuthService.dart';
 import '../utils/CrashlyticsNavObserver.dart';
 
@@ -25,7 +30,24 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
+<<<<<<< HEAD
         return buildSlideTransitionPage(Stats(), state);
+=======
+        return buildSlideTransitionPage(ClientsScreen(), state);
+      },
+    ),
+    GoRoute(
+      path: '/otp-screen',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(ClientsScreen(), state);
+      },
+    ),
+    GoRoute(
+      path: '/clients-screen',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(ClientsScreen(), state);
+        return buildSlideTransitionPage(Createclient(), state);
+>>>>>>> 5f28d84005c6b5d52e089478efd10b17b69a3e7e
       },
     ),GoRoute(
       path: '/stats',
@@ -61,6 +83,21 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/logging',
       builder: (context, state) =>  Logging(),
+    ),
+    GoRoute(
+      path: '/client-details-screen',
+      builder: (context, state) =>  ClientDetailsScreen(),
+    ),
+    GoRoute(
+      path: '/upload-pictures',
+      builder: (context, state) =>  UploadPictures(),
+    ),
+    GoRoute(
+      path: '/success',
+      builder: (context, state) {
+        final String message = state.extra as String;
+        return SucessScreen(text: message);
+      },
     ),
 
   ],
