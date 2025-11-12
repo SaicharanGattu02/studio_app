@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studio_app/presentation/HomeScreen.dart';
+import 'package:studio_app/presentation/clients_screen.dart';
+import 'package:studio_app/presentation/profilescreen.dart';
+import 'package:studio_app/presentation/stats.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../bloc/internet_status/internet_status_bloc.dart';
 import '../../services/SocketService.dart';
@@ -112,12 +115,7 @@ class _DashboardState extends State<Dashboard> {
               HapticFeedback.lightImpact();
               setState(() => _selectedIndex = i);
             },
-            children: const [
-              Home()
-              // MenteeStudyZone(),
-              // EccScreen(),
-              // Communityscreen(),
-            ],
+            children: [Home(), ClientsScreen(), Stats(), Profile()],
           ),
           // ),
         ),
@@ -200,8 +198,8 @@ class _DashboardState extends State<Dashboard> {
         BottomNavigationBarItem(
           icon: Image.asset(
             _selectedIndex == 3
-                ? "assets/icons/ChartBar_Selected.png"
-                : "assets/icons/ChartBar.png",
+                ? "assets/icons/UserCircle_Selected.png"
+                : "assets/icons/UserCircle.png",
             width: 20,
             height: 20,
           ),
