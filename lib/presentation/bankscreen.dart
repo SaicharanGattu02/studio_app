@@ -16,10 +16,12 @@ class _BankDetailsState extends State<BankDetails> {
   final Color greyColor = const Color(0xFF9E9E9E);
   final Color goldColor = const Color(0xFFE0C06B);
 
-  final holderController = TextEditingController(text: "Shiva Raj");
-  final accNameController = TextEditingController(text: "123654123");
-  final ifscController = TextEditingController(text: "123654");
-  final upiController = TextEditingController(text: "Shivaraj@hdfcbank");
+  final _formKey = GlobalKey<FormState>();
+
+  final holderController = TextEditingController();
+  final accNameController = TextEditingController();
+  final ifscController = TextEditingController();
+  final upiController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,71 +31,96 @@ class _BankDetailsState extends State<BankDetails> {
       backgroundColor: bgColor,
       appBar: CustomAppBar1(title: "Bank Details", actions: []),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: width > 600 ? width * 0.15 : 16, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _label("Account Holder Name"),
-            _inputField(controller: holderController),
-            SizedBox(height: 18),
+        padding: EdgeInsets.symmetric(
+          horizontal: width > 600 ? width * 0.15 : 16,
+          vertical: 20,
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _label("Account Holder Name"),
+              _inputField(
+                controller: holderController,
+                hint: "Enter account holder name",
+                validatorMsg: "Please enter account holder name",
+              ),
+              SizedBox(height: 18),
 
-            _label("Account Name"),
-            _inputField(controller: accNameController),
-            SizedBox(height: 18),
+              _label("Account Number"),
+              _inputField(
+                controller: accNameController,
+                hint: "Enter account number",
+                validatorMsg: "Please enter account number",
+              ),
+              SizedBox(height: 18),
 
-            _label("IFSC Code"),
-            _inputField(controller: ifscController),
-            SizedBox(height: 18),
+              _label("IFSC Code"),
+              _inputField(
+                controller: ifscController,
+                hint: "Enter IFSC code",
+                validatorMsg: "Please enter IFSC code",
+              ),
+              SizedBox(height: 18),
 
-            _label("UPI ID"),
-            _inputField(controller: upiController),
-            SizedBox(height: 280),
-
-
-          ],
+              _label("UPI ID"),
+              _inputField(
+                controller: upiController,
+                hint: "Enter UPI ID",
+                validatorMsg: "Please enter UPI ID",
+              ),
+              SizedBox(height: 280),
+            ],
+          ),
         ),
       ),
-        bottomNavigationBar: SafeArea(child: Padding(
-          padding: const EdgeInsets.fromLTRB(16,0,16,20.0),
-          child: CustomAppButton1(text: "Update", onPlusTap: (){
-
-          }),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 32.0),
+          child: CustomAppButton1(
+            text: "Update",
+            onPlusTap: () {
+              if (_formKey.currentState!.validate()) {
+                // All inputs valid — future API call goes here
+              }
+            },
+          ),
         ),
-        )
+      ),
     );
   }
 
-  Widget _label(String text) => Text(text, style: TextStyle(color: whiteColor, fontSize: 16));
+  Widget _label(String text) =>
+      Text(text, style: TextStyle(color: whiteColor, fontSize: 16));
 
-  Widget _inputField({required TextEditingController controller}) {
-    return TextField(
+  Widget _inputField({
+    required TextEditingController controller,
+    required String hint,
+    required String validatorMsg,
+  }) {
+    return TextFormField(
+      cursorColor: Colors.white,
       controller: controller,
-      style: TextStyle(color: Color.fromRGBO(190, 190, 190, 1)
-      ),
+      style: const TextStyle(color: Color.fromRGBO(190, 190, 190, 1)),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return validatorMsg;
+        }
+        return null;
+      },
       decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: greyColor.withOpacity(0.6)),
         filled: true,
         fillColor: cardColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
           borderSide: BorderSide.none,
         ),
-        focusedBorder: InputBorder.none,    // <-- also no border on focus
+        focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
-
-      ),
-    );
-  }
-
-
-
-  Widget _updateButton(double width) {
-    return Center(
-      child: Container(
-        width: width > 600 ? width * 0.3 : double.infinity,
-        decoration: BoxDecoration(color: Color.fromRGBO(254, 190, 1, 0.4), borderRadius: BorderRadius.circular(30)),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        alignment: Alignment.center,
-        child: Text("Update", style: TextStyle(color: bgColor, fontWeight: FontWeight.w600)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       ),
     );
   }
