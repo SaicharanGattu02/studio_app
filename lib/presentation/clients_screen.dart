@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:studio_app/Components/Shimmers.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
 import 'package:shimmer/shimmer.dart';
@@ -400,69 +401,28 @@ class ClientTileShimmer extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
       ),
-      child: Shimmer.fromColors(
-        baseColor: const Color(0xFF2A2A2A),
-        highlightColor: const Color(0xFF3A3A3A),
-        child: Row(
-          children: [
-            // Circle shimmer
-            Container(
-              width: h * 0.06,
-              height: h * 0.06,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(h * 0.04),
-              ),
-            ),
+      child: Row(
+        children: [
+        shimmerCircle(h*0.06, context),
 
-            SizedBox(width: w * 0.03),
+          SizedBox(width: w * 0.03),
 
-            // Text shimmers
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: w * 0.4,
-                  height: h * 0.02,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                SizedBox(height: h * 0.0075),
-                Container(
-                  width: w * 0.3,
-                  height: h * 0.015,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                SizedBox(height: h * 0.005),
-                Container(
-                  width: w * 0.25,
-                  height: h * 0.015,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              shimmerText(w*0.4, 12, context),
+              SizedBox(height: h * 0.0075),
+              shimmerText(w*0.4, 12, context),
+              SizedBox(height: h * 0.0075),
+              shimmerText(w*0.4, 12, context),
 
-            const Spacer(),
+            ],
+          ),
 
-            // Arrow shimmer
-            Container(
-              width: h * 0.03,
-              height: h * 0.03,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ],
-        ),
+          const Spacer(),
+
+          shimmerRectangle(24, context)
+        ],
       ),
     );
   }
