@@ -25,7 +25,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Createclient(), state);
+        return buildSlideTransitionPage(Stats(), state);
       },
     ),GoRoute(
       path: '/stats',
