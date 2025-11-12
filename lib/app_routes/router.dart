@@ -3,11 +3,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../presentation/Splash.dart';
-import '../services/AuthService.dart';
-import '../utils/CrashlyticsNavObserver.dart';
+import '../presentation/dashboard.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -18,10 +16,17 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-        return buildSlideTransitionPage(SplashScreen(), state);
+        return buildSlideTransitionPage(Dashboard(), state);
+      },
+    ),
+    GoRoute(
+      path: '/dashboard',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),
   ],
+
   errorBuilder: (context, state) {
     final err = state.error ?? 'Unknown router error';
     FirebaseCrashlytics.instance.recordError(
