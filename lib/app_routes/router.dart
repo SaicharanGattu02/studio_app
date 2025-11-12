@@ -9,6 +9,7 @@ import 'package:studio_app/presentation/bankscreen.dart';
 import 'package:studio_app/presentation/client_details_screen.dart';
 import 'package:studio_app/presentation/clients_screen.dart';
 import 'package:studio_app/presentation/contactscreen.dart';
+import 'package:studio_app/presentation/dashboard.dart';
 import 'package:studio_app/presentation/otp_screen.dart';
 import 'package:studio_app/presentation/upload_pictures.dart';
 import 'package:studio_app/presentation/createclient.dart';
@@ -30,63 +31,47 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Splash(), state);
+      },
+    ),
+    GoRoute(
+      path: '/sign_in',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(SignInScreen(), state);
+      },
+    ),
+    GoRoute(
+      path: '/dashboard',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(Dashboard(), state);
+      },
+    ),
+    GoRoute(
+      path: '/otp_screen',
+      pageBuilder: (context, state) {
         return buildSlideTransitionPage(ClientsScreen(), state);
       },
     ),
     GoRoute(
-      path: '/otp-screen',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(ClientsScreen(), state);
-      },
-    ),
-    GoRoute(
-      path: '/clients-screen',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(ClientsScreen(), state);
-        return buildSlideTransitionPage(Createclient(), state);
-      },
-    ),GoRoute(
-      path: '/stats',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Stats(), state);
-      },
-    ),
-    GoRoute(
-      path: '/profile',
-      pageBuilder: (context, state) {
-        return buildSlideTransitionPage(Profile(), state);
-      },
-    ), GoRoute(
       path: '/contact',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Contact(), state);
       },
-    ), GoRoute(
+    ),
+    GoRoute(
       path: '/bankdetails',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(BankDetails(), state);
-        return buildSlideTransitionPage(SplashScreen2(), state);
       },
     ),
-    GoRoute(
-      path: '/second-splash',
-      builder: (context, state) => const SecondSplashScreen(),
-    ),
-    GoRoute(
-      path: '/signin',
-      builder: (context, state) =>  SignInScreen(),
-    ),
-    GoRoute(
-      path: '/logging',
-      builder: (context, state) =>  Logging(),
-    ),
+    GoRoute(path: '/logging', builder: (context, state) => Logging()),
     GoRoute(
       path: '/client-details-screen',
-      builder: (context, state) =>  ClientDetailsScreen(),
+      builder: (context, state) => ClientDetailsScreen(),
     ),
     GoRoute(
       path: '/upload-pictures',
-      builder: (context, state) =>  UploadPictures(),
+      builder: (context, state) => UploadPictures(),
     ),
     GoRoute(
       path: '/success',
@@ -95,7 +80,6 @@ final GoRouter appRouter = GoRouter(
         return SucessScreen(text: message);
       },
     ),
-
   ],
   errorBuilder: (context, state) {
     final err = state.error ?? 'Unknown router error';

@@ -2,159 +2,133 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:studio_app/presentation/splash_screen.dart' as _controller;
-
-import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:studio_app/utils/color_constants.dart';
 
-class SplashScreen2 extends StatefulWidget {
-  const SplashScreen2({super.key});
+class Splash extends StatefulWidget {
+  const Splash({super.key});
 
   @override
-  State<SplashScreen2> createState() => _SplashScreen2State();
+  State<Splash> createState() => _SplashState();
 }
 
-class _SplashScreen2State extends State<SplashScreen2>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _SplashState extends State<Splash> with TickerProviderStateMixin {
+  late final AnimationController _rotController;
+  late final AnimationController _secondController;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<Offset> _slideAnimation;
+
+  // Timings (adjust as needed)
+  final Duration firstDuration = const Duration(seconds: 2);
+  final Duration secondAnimDuration = const Duration(milliseconds: 800);
+  final Duration secondStartDelay = const Duration(seconds: 1);
+
+  // State to switch between first and second view
+  bool _showSecond = false;
 
   @override
   void initState() {
     super.initState();
 
-    /// Make notification bar black
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.black,
-      statusBarIconBrightness: Brightness.light,
-    ));
+    // Make status bar black
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
 
-    _controller = AnimationController(
+    // Rotating controller for first splash
+    _rotController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat();
 
-    /// Navigate after 2 seconds using GoRouter
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        context.go('/second-splash');
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    /// MediaQuery
-    final size = MediaQuery.of(context).size;
-    final w = size.width;
-    final h=size.height;
-
-    /// Responsive sizes
-    final imageSize = w * 0.55; // 45% of width
-
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: h*0.12),
-            /// FIRST IMAGE (Rotating)
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (_, child) {
-                return Transform.rotate(
-                  angle: _controller.value * 2 * pi,
-                  child: child,
-                );
-              },
-              child: Image.asset(
-                "assets/images/spash_first.png",
-                width: imageSize,
-                height: imageSize,
-                fit: BoxFit.contain,
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(0, -imageSize * 0.2),
-              child: Image.asset(
-                "assets/images/splash_studio.png",
-                width: imageSize,
-                height: imageSize,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-class SecondSplashScreen extends StatefulWidget {
-  const SecondSplashScreen({super.key});
-
-  @override
-  State<SecondSplashScreen> createState() => _SecondSplashScreenState();
-}
-
-class _SecondSplashScreenState extends State<SecondSplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
+    // Second screen animations
+    _secondController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: secondAnimDuration,
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _secondController, curve: Curves.easeIn));
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(parent: _secondController, curve: Curves.easeOut),
+        );
 
-    /// Start animation after 1 second
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        _animationController.forward();
-      }
+    // After firstDuration, switch to second splash and start second animation
+    Future.delayed(firstDuration, () {
+      if (!mounted) return;
+      setState(() => _showSecond = true);
+
+      // small delay before playing second animation (as original)
+      Future.delayed(secondStartDelay, () {
+        if (mounted) _secondController.forward();
+      });
     });
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _rotController.dispose();
+    _secondController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // MediaQuery sizes
     final size = MediaQuery.of(context).size;
     final w = size.width;
     final h = size.height;
 
+    // Image size for the rotating image
+    final imageSize = w * 0.55;
+
+    // If still in first splash stage
+    if (!_showSecond) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: h * 0.12),
+              AnimatedBuilder(
+                animation: _rotController,
+                builder: (_, child) {
+                  return Transform.rotate(
+                    angle: _rotController.value * 2 * pi,
+                    child: child,
+                  );
+                },
+                child: Image.asset(
+                  "assets/images/spash_first.png",
+                  width: imageSize,
+                  height: imageSize,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(0, -imageSize * 0.2),
+                child: Image.asset(
+                  "assets/images/splash_studio.png",
+                  width: imageSize,
+                  height: imageSize,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Second splash view
     return Scaffold(
       body: Container(
         width: w,
@@ -174,39 +148,32 @@ class _SecondSplashScreenState extends State<SecondSplashScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// Push main text center
-                 SizedBox(height: h * 0.33),
-
+                  SizedBox(height: h * 0.33),
                   Text(
                     "Get\nStarted\nwith",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: w * 0.10,   // responsive
+                      fontSize: w * 0.10,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-
                   Text(
                     "Studio\nApp",
                     style: TextStyle(
                       color: primarycolor,
-                      fontSize: w * 0.12,   // responsive
+                      fontSize: w * 0.12,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-
                   const Spacer(),
-
-                  /// BUTTON AT BOTTOM
                   InkWell(
-                    onTap: ()
-                    {
-                      context.go('/signin');
+                    onTap: () {
+                      context.go('/sign_in');
                     },
                     child: Padding(
-                      padding:  EdgeInsets.only(right: w * 0.07),
+                      padding: EdgeInsets.only(right: w * 0.07),
                       child: Container(
                         width: double.infinity,
                         height: h * 0.065,
@@ -226,7 +193,7 @@ class _SecondSplashScreenState extends State<SecondSplashScreen>
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color(0xFF222222),
-                              fontSize: w * 0.045,  // responsive
+                              fontSize: w * 0.045,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w600,
                               height: 1.06,
@@ -236,7 +203,6 @@ class _SecondSplashScreenState extends State<SecondSplashScreen>
                       ),
                     ),
                   ),
-
                   SizedBox(height: h * 0.07),
                 ],
               ),
