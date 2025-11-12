@@ -59,6 +59,12 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/clients_screen',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(ClientsScreen(), state);
+      },
+    ),
+    GoRoute(
       path: '/bankdetails',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(BankDetails(), state);
