@@ -22,9 +22,10 @@ class _CreateclientState extends State<Createclient> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: CustomAppBar1(title: "Create Client", actions: []),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,6 +195,7 @@ class _CreateclientState extends State<Createclient> {
           ),
         ),
       ),
+        ),
     );
   }
 }
