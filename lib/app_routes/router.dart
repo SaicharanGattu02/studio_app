@@ -30,10 +30,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (context, state) {
-<<<<<<< HEAD
         return buildSlideTransitionPage(Stats(), state);
-=======
-        return buildSlideTransitionPage(ClientsScreen(), state);
       },
     ),
     GoRoute(
@@ -46,8 +43,7 @@ final GoRouter appRouter = GoRouter(
       path: '/clients-screen',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(ClientsScreen(), state);
-        return buildSlideTransitionPage(Createclient(), state);
->>>>>>> 5f28d84005c6b5d52e089478efd10b17b69a3e7e
+
       },
     ),GoRoute(
       path: '/stats',
