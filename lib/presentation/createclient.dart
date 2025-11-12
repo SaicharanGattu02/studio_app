@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:studio_app/Components/CutomAppBar.dart';
 
 class Createclient extends StatefulWidget {
@@ -145,9 +146,7 @@ class _CreateclientState extends State<Createclient> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("OTP Sent Successfully")),
-                          );
+                          context.push('/otp_screen');
                         }
                       },
                       style: ElevatedButton.styleFrom(

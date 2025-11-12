@@ -42,6 +42,12 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/otp_screen',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(OtpScreen(), state);
+      },
+    ),
+    GoRoute(
       path: '/dashboard',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(Dashboard(), state);

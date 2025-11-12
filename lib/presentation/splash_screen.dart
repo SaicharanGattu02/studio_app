@@ -145,66 +145,68 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
             position: _slideAnimation,
             child: Padding(
               padding: EdgeInsets.only(left: w * 0.1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: h * 0.33),
-                  Text(
-                    "Get\nStarted\nwith",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: w * 0.10,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: h * 0.33),
+                    Text(
+                      "Get\nStarted\nwith",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: w * 0.10,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Studio\nApp",
-                    style: TextStyle(
-                      color: primarycolor,
-                      fontSize: w * 0.12,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
+                    Text(
+                      "Studio\nApp",
+                      style: TextStyle(
+                        color: primarycolor,
+                        fontSize: w * 0.12,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      context.go('/sign_in');
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: w * 0.07),
-                      child: Container(
-                        width: double.infinity,
-                        height: h * 0.065,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: w * 0.2,
-                          vertical: h * 0.013,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFFFEBE01),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(w * 0.08),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        context.go('/sign_in');
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: w * 0.07),
+                        child: Container(
+                          width: double.infinity,
+                          height: h * 0.065,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: w * 0.2,
+                            vertical: h * 0.013,
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Sign-In now',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: const Color(0xFF222222),
-                              fontSize: w * 0.045,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 1.06,
+                          decoration: ShapeDecoration(
+                            color: const Color(0xFFFEBE01),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(w * 0.08),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Sign-In now',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color(0xFF222222),
+                                fontSize: w * 0.045,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 1.06,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: h * 0.07),
-                ],
+                    SizedBox(height: h * 0.07),
+                  ],
+                ),
               ),
             ),
           ),

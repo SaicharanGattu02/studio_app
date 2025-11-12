@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:studio_app/Components/Shimmers.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
 
@@ -21,7 +22,23 @@ class _StatsState extends State<Stats> {
   final Color darkGrey = const Color(0xFF222222);
 
   bool showEarnings = true;
-
+  Widget _statsCardShimmer(String title, String value, {bool showBorder = true}) {
+    bool isThirdLine = title == "Pending Withdrawals";
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              shimmerText(100, 13, context),
+              shimmerText(60, 11, context)
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   Widget _statsCard(String title, String value, {bool showBorder = true}) {
     bool isThirdLine = title == "Pending Withdrawals";
     return Column(
@@ -62,13 +79,12 @@ class _StatsState extends State<Stats> {
       ],
     );
   }
-
   Widget _clientBox(
-    String title,
-    String value, {
-    required String path,
-    bool isYellow = false,
-  }) {
+      String title,
+      String value, {
+        required String path,
+        bool isYellow = false,
+      }) {
     return Container(
       height: SizeConfig.screenHeight * 0.11,
       color: isYellow ? primarycolor : whiteColor,
@@ -97,6 +113,56 @@ class _StatsState extends State<Stats> {
               fontWeight: FontWeight.w700,
             ),
           ),
+        ],
+      ),
+    );
+  }
+  Widget _clientBoxShimmer(
+  bool isYellow
+  ) {
+    return Container(
+      height: SizeConfig.screenHeight * 0.11,
+      color: isYellow ? primarycolor : whiteColor,
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          shimmerContainer(15, 15, context),
+          const SizedBox(height: 3),
+          shimmerText(60, 10, context),
+          const SizedBox(height: 4),
+          shimmerText(60, 15, context)
+        ],
+      ),
+    );
+  }
+
+  Widget _earningitemShimmer()
+  {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        children: [
+          shimmerCircle(52, context),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                shimmerText(50, 11, context),
+                SizedBox(height: 6,),
+                shimmerText(100, 7, context),
+                SizedBox(height: 6,),
+                shimmerText(100, 7, context),
+              ],
+            ),
+          ),
+          shimmerContainer(60, 25, context)
         ],
       ),
     );
@@ -159,6 +225,48 @@ class _StatsState extends State<Stats> {
                 fontWeight: FontWeight.w600,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _withdrawalItemShimmer()
+  {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        children: [
+          shimmerCircle(42, context),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                shimmerText(55, 11, context),
+                SizedBox(height: 8,),
+                shimmerText(100, 11, context),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Text(
+                "₹",
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  color: Colors.white,
+                  fontSize: 13,
+                ),
+              ),
+              shimmerText(45,11, context)
+            ],
           ),
         ],
       ),
@@ -267,6 +375,7 @@ class _StatsState extends State<Stats> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                 // _statsCardShimmer("Total Earning", ''),
                   _statsCard("Total Earnings", "5,00,000"),
                   _statsCard("Commission Received", "3,00,000"),
                   _statsCard("Pending Withdrawals", "2,00,000"),
@@ -300,6 +409,16 @@ class _StatsState extends State<Stats> {
               ),
               child: Column(
                 children: [
+                /*  Row(
+                    children: [
+                      Expanded(
+                        child: _clientBoxShimmer(true)
+                      ),
+                      Expanded(
+                        child: _clientBoxShimmer(false)
+                      ),
+                    ],
+                  ),*/
                   Row(
                     children: [
                       Expanded(
@@ -322,6 +441,7 @@ class _StatsState extends State<Stats> {
                   ),
                   Row(
                     children: [
+
                       Expanded(
                         child: _clientBox(
                           "Advance",
@@ -421,6 +541,7 @@ class _StatsState extends State<Stats> {
 
             // ---------- Conditional List ----------
             if (showEarnings) ...[
+             // _earningitemShimmer(),
               _earningItem(
                 "Abhi",
                 "Wedding Event",
@@ -450,6 +571,7 @@ class _StatsState extends State<Stats> {
                 Color(0xffC3FE01),
               ),
             ] else ...[
+             // _withdrawalItemShimmer(),
               _withdrawalItem(
                 "January",
                 "25 Jan 25",

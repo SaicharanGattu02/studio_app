@@ -5,6 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:studio_app/Components/Shimmers.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:studio_app/presentation/ScreenWidgets/EventCard.dart';
+import 'package:studio_app/utils/color_constants.dart';
+import 'package:studio_app/utils/media_query_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:shimmer/shimmer.dart';
 class ClientsScreen extends StatelessWidget {
   const ClientsScreen({super.key});
@@ -48,7 +56,7 @@ class ClientsScreen extends StatelessWidget {
           children: [
             searchBar(),
             SizedBox(height: h * 0.02),
-            clientsHeader(),
+            clientsHeader(context),
             SizedBox(height: h * 0.02),
             PlanSelector(),
             SizedBox(height: h * 0.02),
@@ -132,7 +140,7 @@ class ClientsScreen extends StatelessWidget {
 
 
 
-  Widget clientsHeader() {
+  Widget clientsHeader(BuildContext context) {
     final h = SizeConfig.screenHeight;
     final w = SizeConfig.screenWidth;
 
@@ -151,27 +159,34 @@ class ClientsScreen extends StatelessWidget {
 
         const Spacer(),
 
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: w * 0.04,
-            vertical: h * 0.01,
-          ),
-          decoration: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                width: 1,
-                color: const Color(0xFFFFEDC2),
-              ),
-              borderRadius: BorderRadius.circular(16),
+        InkWell(
+          onTap: ()
+          {
+
+            context.push('/create_client');
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: w * 0.04,
+              vertical: h * 0.01,
             ),
-          ),
-          child: Text(
-            'Create Client',
-            style: TextStyle(
-              color: primarycolor,
-              fontSize: h * 0.018,   // ✅ responsive
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w700,
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 1,
+                  color: const Color(0xFFFFEDC2),
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            child: Text(
+              'Create Client',
+              style: TextStyle(
+                color: primarycolor,
+                fontSize: h * 0.018,   // ✅ responsive
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
