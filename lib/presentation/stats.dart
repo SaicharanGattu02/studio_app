@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:studio_app/utils/color_constants.dart';
+import 'package:studio_app/utils/media_query_helper.dart';
 
 class Stats extends StatefulWidget {
   const Stats({super.key});
@@ -64,9 +65,9 @@ class _StatsState extends State<Stats> {
 
   Widget _clientBox(String title, String value,
       {required String path, bool isYellow = false}) {
-    return Container(
+    return Container(height: SizeConfig.screenHeight*0.11,
       color: isYellow ? primarycolor : whiteColor,
-      padding: const EdgeInsets.all(10),
+      padding:  EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -175,7 +176,7 @@ class _StatsState extends State<Stats> {
                 fontFamily: 'Inter',
                 color: Colors.black,
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
@@ -284,9 +285,9 @@ class _StatsState extends State<Stats> {
             const SizedBox(height: 15),
 
             Container(
-              width: double.infinity,
+              width:SizeConfig.screenWidth,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10),border: Border.all(color:Colors.transparent)
               ),
               child: Column(
                 children: [
@@ -299,7 +300,8 @@ class _StatsState extends State<Stats> {
                       ),
                       Expanded(
                         child: _clientBox("Standard", "50000",
-                            path: 'assets/icons/moon.svg', isYellow: true),
+                            path: 'assets/icons/moon.svg',
+                            isYellow: true),
                       ),
                     ],
                   ),
