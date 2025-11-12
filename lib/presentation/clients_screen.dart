@@ -313,7 +313,7 @@ class _ClientListWidgetState extends State<ClientListWidget> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {
           _isLoading = false;

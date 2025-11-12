@@ -62,7 +62,7 @@ class SucessScreen extends StatelessWidget {
               ),
               child: GestureDetector(
                 onTap: () {
-                  context.go('/clients-screen');
+                  context.go('/clients_screen');
                 },
                 child: Container(
                   width: double.infinity,

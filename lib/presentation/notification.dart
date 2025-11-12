@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:studio_app/Components/CutomAppBar.dart';
 
-class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  State<NotificationPage> createState() => _NotificationPageState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificationPageState extends State<NotificationPage> {
-  // Sample notification data
+class _NotificationScreenState extends State<NotificationScreen> {
   final List<Map<String, dynamic>> notifications = [
     {
       "date": "12 Jun 25",
@@ -32,27 +31,12 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar1(title: '', actions: const []),
-
+      appBar: CustomAppBar1(title: 'Notifications', actions: const []),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ✅ Notification Heading (below app bar, slightly right)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 10),
-              child: Text(
-                "Notification",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            // ✅ Notification list
             Expanded(
               child: ListView.builder(
                 itemCount: notifications.length,

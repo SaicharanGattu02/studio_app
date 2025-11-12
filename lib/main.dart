@@ -18,6 +18,7 @@ import 'package:studio_app/utils/media_query_helper.dart';
 import 'StateInjector.dart';
 import 'app_routes/router.dart';
 import 'package:provider/provider.dart';
+
 //
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 //     FlutterLocalNotificationsPlugin();
@@ -154,7 +155,7 @@ void main() {
   //       // Handle launches from tray taps
   //     });
 
-      runApp(const MyApp()); // ✅ same zone as everything above
+  runApp(const MyApp()); // ✅ same zone as everything above
   //   },
   //   (error, stack) async {
   //     await FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -201,6 +202,11 @@ class MyApp extends StatelessWidget {
         title: 'Studio',
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: primarycolor,
+            selectionColor: primarycolor.withOpacity(0.3),
+            selectionHandleColor: primarycolor,
+          ),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
@@ -210,24 +216,21 @@ class MyApp extends StatelessWidget {
           searchBarTheme: const SearchBarThemeData(),
           tabBarTheme: const TabBarThemeData(),
           inputDecorationTheme: InputDecorationTheme(
-            hintStyle:  TextStyle(
+            hintStyle: TextStyle(
               color: hintColor,
               fontSize: 14,
               fontWeight: FontWeight.w400,
               fontFamily: "Inter",
             ),
-            labelStyle:  TextStyle(
+            labelStyle: TextStyle(
               color: labeltextColor,
               fontSize: 14,
               fontWeight: FontWeight.w600,
               fontFamily: "Inter",
             ),
             filled: true,
-            fillColor: Colors.white,
-            contentPadding:  EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
+            fillColor: Colors.black,
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(24),
               borderSide: BorderSide(color: Color(0xff7C7C7C), width: 1),
@@ -287,209 +290,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:isolate';
-// import 'dart:ui';
-// import 'dart:io' show Platform;
-//
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:provider/provider.dart';
-// import 'package:mentivisor/services/ApiClient.dart';
-// import 'package:mentivisor/services/SecureStorageService.dart';
-// import 'package:mentivisor/utils/AppLogger.dart';
-// import 'package:mentivisor/utils/media_query_helper.dart';
-// import 'StateInjector.dart';
-// import 'app_routes/router.dart';
-// import 'firebase_options.dart';
-//
-// // Only available for mobile (Android/iOS)
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-//
-// final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-//
-// // Initialize the notification plugin (mobile only)
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-// FlutterLocalNotificationsPlugin();
-//
-// const AndroidNotificationChannel channel = AndroidNotificationChannel(
-//   'high_importance_channel',
-//   'High Importance Notifications',
-//   description: 'This channel is used for important notifications.',
-//   importance: Importance.high,
-//   playSound: true,
-// );
-//
-// /// Background FCM handler (MUST be top-level)
-// @pragma('vm:entry-point')
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//   AppLogger.log("BG message received: ${message.messageId}");
-// }
-//
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//
-//   // Crashlytics (disabled for web)
-//   if (!kIsWeb) {
-//     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-//
-//     PlatformDispatcher.instance.onError = (error, stack) {
-//       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-//       return true;
-//     };
-//
-//     Isolate.current.addErrorListener(
-//       RawReceivePort((pair) async {
-//         final List<dynamic> errorAndStacktrace = pair;
-//         await FirebaseCrashlytics.instance.recordError(
-//           errorAndStacktrace.first,
-//           errorAndStacktrace.last,
-//           fatal: true,
-//         );
-//       }).sendPort,
-//     );
-//   }
-//
-//   // Setup interceptors
-//   ApiClient.setupInterceptors();
-//
-//   // Orientation (mobile only)
-//   if (!kIsWeb) {
-//     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-//   }
-//
-//   // FCM configuration
-//   await setupFirebaseMessaging();
-//
-//   runApp(const MyApp());
-// }
-//
-// Future<void> setupFirebaseMessaging() async {
-//   final messaging = FirebaseMessaging.instance;
-//
-//   if (kIsWeb) {
-//     // ✅ Web handling (no local notifications)
-//     AppLogger.log("Running on Web (Chrome)");
-//     try {
-//       final token = await messaging.getToken(
-//         vapidKey: "YOUR_WEB_VAPID_KEY_HERE",
-//       );
-//       AppLogger.log("FCM Web Token: $token");
-//     } catch (e) {
-//       AppLogger.log("Error getting web FCM token: $e");
-//     }
-//     return;
-//   }
-//
-//   // ✅ Mobile handling
-//   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-//
-//   await messaging.requestPermission(alert: true, badge: true, sound: true);
-//
-//   final token = await messaging.getToken();
-//   AppLogger.log("FCM Token: $token");
-//
-//   if (token != null) {
-//     await SecureStorageService.instance.setString("fb_token", token);
-//   }
-//
-//   // Initialize local notifications (mobile only)
-//   const iosInit = DarwinInitializationSettings(
-//     requestAlertPermission: true,
-//     requestBadgePermission: true,
-//     requestSoundPermission: true,
-//   );
-//   const initSettings = InitializationSettings(
-//     android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-//     iOS: iosInit,
-//   );
-//
-//   await flutterLocalNotificationsPlugin.initialize(
-//     initSettings,
-//     onDidReceiveNotificationResponse: (NotificationResponse response) async {
-//       AppLogger.log("Notification clicked: ${response.payload}");
-//     },
-//   );
-//
-//   await flutterLocalNotificationsPlugin
-//       .resolvePlatformSpecificImplementation<
-//       AndroidFlutterLocalNotificationsPlugin>()
-//       ?.createNotificationChannel(channel);
-//
-//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//     final notification = message.notification;
-//     final android = message.notification?.android;
-//     if (notification != null && android != null) {
-//       showNotification(notification, android, message.data);
-//     }
-//   });
-//
-//   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-//     AppLogger.log("Opened from notification: ${message.data}");
-//   });
-// }
-//
-// void showNotification(
-//     RemoteNotification notification,
-//     AndroidNotification android,
-//     Map<String, dynamic> data,
-//     ) async {
-//   final androidDetails = AndroidNotificationDetails(
-//     channel.id,
-//     channel.name,
-//     channelDescription: channel.description,
-//     importance: Importance.max,
-//     priority: Priority.high,
-//     playSound: true,
-//     icon: '@mipmap/ic_launcher',
-//   );
-//
-//   final details = NotificationDetails(android: androidDetails);
-//
-//   await flutterLocalNotificationsPlugin.show(
-//     notification.hashCode,
-//     notification.title,
-//     notification.body,
-//     details,
-//     payload: jsonEncode(data),
-//   );
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig.init(context);
-//     return MultiRepositoryProvider(
-//       providers: StateInjector.repositoryProviders,
-//       child: MultiProvider(
-//         providers: StateInjector.blocProviders,
-//         child: MaterialApp.router(
-//           title: 'MentiVisor',
-//           debugShowCheckedModeBanner: false,
-//           theme: ThemeData(
-//             scaffoldBackgroundColor: Colors.white,
-//             colorScheme: const ColorScheme.light(background: Colors.white),
-//             fontFamily: 'segeo',
-//             visualDensity: VisualDensity.adaptivePlatformDensity,
-//           ),
-//           routerConfig: appRouter,
-//         ),
-//       ),
-//     );
-//   }
-// }
