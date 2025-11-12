@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
+import 'package:shimmer/shimmer.dart';
 class ClientsScreen extends StatelessWidget {
   const ClientsScreen({super.key});
 
@@ -52,37 +53,9 @@ class ClientsScreen extends StatelessWidget {
             SizedBox(height: h * 0.02),
 
             Expanded(
-              child:  isTablet
-                  ? GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1.6,
-                ),
-                itemCount: dummyClients.length,
-                itemBuilder: (context, index) {
-                  final client = dummyClients[index];
-                  return ClientTile(
-                    name: client["name"] ?? "",
-                    event: client["event"] ?? "",
-                    date: client["date"] ?? "",
-                  );
-                },
-              )
-                  : ListView.builder(
-                itemCount: dummyClients.length,
-                itemBuilder: (context, index) {
-                  final client = dummyClients[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: h * 0.015),
-                    child: ClientTile(
-                      name: client["name"] ?? "",
-                      event: client["event"] ?? "",
-                      date: client["date"] ?? "",
-                    ),
-                  );
-                },
+              child: ClientListWidget(
+                isTablet: isTablet,
+                dummyClients: dummyClients,
               ),
             )
 
@@ -228,13 +201,12 @@ class ClientTile extends StatelessWidget {
     final w = SizeConfig.screenWidth;
 
     return InkWell(
-      onTap: ()
-      {
+      onTap: () {
         context.push('/client-details-screen');
       },
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(w * 0.04), // ~16px at 400dp width
+        padding: EdgeInsets.all(w * 0.04),
         decoration: ShapeDecoration(
           color: const Color(0xFF222222),
           shape: RoundedRectangleBorder(
@@ -243,20 +215,19 @@ class ClientTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            /// ✅ Circle With Alphabet
             Container(
-              width: h * 0.06,         // ~48px if h≈800
+              width: h * 0.06,
               height: h * 0.06,
               decoration: BoxDecoration(
                 color: const Color(0xFFFFF9E6),
-                borderRadius: BorderRadius.circular(h * 0.04), // ~32px
+                borderRadius: BorderRadius.circular(h * 0.04),
               ),
               alignment: Alignment.center,
               child: Text(
                 name.isNotEmpty ? name[0] : "?",
                 style: TextStyle(
                   color: const Color(0xFF111111),
-                  fontSize: h * 0.02,  // ~16px
+                  fontSize: h * 0.02,
                   fontFamily: "Inter",
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.26,
@@ -264,9 +235,8 @@ class ClientTile extends StatelessWidget {
               ),
             ),
 
-            SizedBox(width: w * 0.03), // ~12px at 400dp width
+            SizedBox(width: w * 0.03),
 
-            /// ✅ Texts Column
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -274,18 +244,18 @@ class ClientTile extends StatelessWidget {
                   name,
                   style: TextStyle(
                     color: const Color(0xFFF5F5F5),
-                    fontSize: h * 0.02,   // ~16px
+                    fontSize: h * 0.02,
                     fontFamily: "Inter",
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.26,
                   ),
                 ),
-                SizedBox(height: h * 0.0075), // ~6px at 800dp height
+                SizedBox(height: h * 0.0075),
                 Text(
                   event,
                   style: TextStyle(
                     color: const Color(0xFFB1B1B1),
-                    fontSize: h * 0.015,  // ~12px
+                    fontSize: h * 0.015,
                     fontFamily: "Inter",
                     fontWeight: FontWeight.w400,
                   ),
@@ -294,7 +264,7 @@ class ClientTile extends StatelessWidget {
                   date,
                   style: TextStyle(
                     color: const Color(0xFFB1B1B1),
-                    fontSize: h * 0.015,  // ~12px
+                    fontSize: h * 0.015,
                     fontFamily: "Inter",
                     fontWeight: FontWeight.w400,
                   ),
@@ -308,7 +278,7 @@ class ClientTile extends StatelessWidget {
               onTap: () {},
               child: SvgPicture.asset(
                 "assets/icons/right_arrow.svg",
-                width: h * 0.03,   // ~24px
+                width: h * 0.03,
                 height: h * 0.03,
               ),
             ),
@@ -318,6 +288,187 @@ class ClientTile extends StatelessWidget {
     );
   }
 }
+
+// ============================================
+// WRAPPER WITH LOADING STATE
+// ============================================
+class ClientListWidget extends StatefulWidget {
+  final bool isTablet;
+  final List<Map<String, dynamic>> dummyClients;
+
+  const ClientListWidget({
+    super.key,
+    required this.isTablet,
+    required this.dummyClients,
+  });
+
+  @override
+  State<ClientListWidget> createState() => _ClientListWidgetState();
+}
+
+class _ClientListWidgetState extends State<ClientListWidget> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final h = SizeConfig.screenHeight;
+
+    if (_isLoading) {
+      return widget.isTablet
+          ? GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 1.6,
+        ),
+        itemCount: 6, // Show 6 shimmer items
+        itemBuilder: (context, index) => const ClientTileShimmer(),
+      )
+          : ListView.builder(
+        itemCount: 6, // Show 6 shimmer items
+        itemBuilder: (context, index) => Padding(
+          padding: EdgeInsets.only(bottom: h * 0.015),
+          child: const ClientTileShimmer(),
+        ),
+      );
+    }
+
+    return widget.isTablet
+        ? GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.6,
+      ),
+      itemCount: widget.dummyClients.length,
+      itemBuilder: (context, index) {
+        final client = widget.dummyClients[index];
+        return ClientTile(
+          name: client["name"] ?? "",
+          event: client["event"] ?? "",
+          date: client["date"] ?? "",
+        );
+      },
+    )
+        : ListView.builder(
+      itemCount: widget.dummyClients.length,
+      itemBuilder: (context, index) {
+        final client = widget.dummyClients[index];
+        return Padding(
+          padding: EdgeInsets.only(bottom: h * 0.015),
+          child: ClientTile(
+            name: client["name"] ?? "",
+            event: client["event"] ?? "",
+            date: client["date"] ?? "",
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+class ClientTileShimmer extends StatelessWidget {
+  const ClientTileShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final h = SizeConfig.screenHeight;
+    final w = SizeConfig.screenWidth;
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(w * 0.04),
+      decoration: ShapeDecoration(
+        color: const Color(0xFF222222),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      child: Shimmer.fromColors(
+        baseColor: const Color(0xFF2A2A2A),
+        highlightColor: const Color(0xFF3A3A3A),
+        child: Row(
+          children: [
+            // Circle shimmer
+            Container(
+              width: h * 0.06,
+              height: h * 0.06,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(h * 0.04),
+              ),
+            ),
+
+            SizedBox(width: w * 0.03),
+
+            // Text shimmers
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: w * 0.4,
+                  height: h * 0.02,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                SizedBox(height: h * 0.0075),
+                Container(
+                  width: w * 0.3,
+                  height: h * 0.015,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                SizedBox(height: h * 0.005),
+                Container(
+                  width: w * 0.25,
+                  height: h * 0.015,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+
+            const Spacer(),
+
+            // Arrow shimmer
+            Container(
+              width: h * 0.03,
+              height: h * 0.03,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
 
 
 
