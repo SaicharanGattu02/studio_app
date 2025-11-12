@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class _EventCard extends StatelessWidget {
+class EventCard extends StatefulWidget {
   final String title;
   final String type;
   final String date;
   final String status;
   final String image;
 
-  const _EventCard({
+  const EventCard({
     required this.title,
     required this.type,
     required this.date,
@@ -15,8 +15,13 @@ class _EventCard extends StatelessWidget {
     required this.image,
   });
 
+  @override
+  State<EventCard> createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
   Color get statusColor {
-    switch (status.toLowerCase()) {
+    switch (widget.status.toLowerCase()) {
       case 'pending':
         return const Color(0xFFFFB800);
       case 'confirmed':
@@ -45,7 +50,7 @@ class _EventCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  widget.title,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -54,7 +59,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  type,
+                  widget.type,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey.shade400,
@@ -63,7 +68,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Joined on $date',
+                  'Joined on ${widget.date}',
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
                 ),
                 const SizedBox(height: 10),
@@ -86,7 +91,7 @@ class _EventCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        status,
+                        widget.status,
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
@@ -104,7 +109,7 @@ class _EventCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
-              image,
+              widget.image,
               height: 100,
               width: 100,
               fit: BoxFit.contain,

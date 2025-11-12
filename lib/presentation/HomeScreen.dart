@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:studio_app/presentation/ScreenWidgets/EventCard.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,13 +63,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000000),
-      appBar: AppBar(toolbarHeight: SizeConfig.screenHeight*0.07,
+      appBar: AppBar(
+        toolbarHeight: SizeConfig.screenHeight * 0.07,
         backgroundColor: Colors.black,
         elevation: 0,
         automaticallyImplyLeading: false,
         titleSpacing: 0, // optional (for proper alignment)
         title: Padding(
-          padding:  EdgeInsets.only(left: 16,bottom: 10),
+          padding: EdgeInsets.only(left: 16, bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 8,
@@ -225,26 +227,29 @@ class _HomeState extends State<Home> {
               ],
             ),
             const SizedBox(height: 16),
-          CustomScrollView(
+            CustomScrollView(
               slivers: [
-          SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverList.builder(
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                final event = events[index];
-                return Padding(
-                  padding:  EdgeInsets.only(bottom: 16),
-                  child: _EventCard(
-                    title: event['title']!,
-                    type: event['type']!,
-                    date: event['date']!,
-                    status: event['status']!,
-                    image: event['image']!,
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverList.builder(
+                    itemCount: events.length,
+                    itemBuilder: (context, index) {
+                      final event = events[index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: EventCard(
+                          title: event['title']!,
+                          type: event['type']!,
+                          date: event['date']!,
+                          status: event['status']!,
+                          image: event['image']!,
+                        ),
+                      );
+                    },
                   ),
-                );
-
-
+                ),
+              ],
+            ),
           ],
         ),
       ),
