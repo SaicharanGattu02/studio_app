@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studio_app/utils/media_query_helper.dart';
 
 class EventCard extends StatefulWidget {
   final String title;
@@ -13,6 +14,7 @@ class EventCard extends StatefulWidget {
     required this.date,
     required this.status,
     required this.image,
+    super.key,
   });
 
   @override
@@ -35,87 +37,126 @@ class _EventCardState extends State<EventCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF202020),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // LEFT SIDE CONTENT
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  widget.type,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade400,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Joined on ${widget.date}',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text(
-                      'Status : ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade300,
-                      ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        // You can add navigation or actions here if needed.
+      },
+      child: Container(width: SizeConfig.screenWidth,
+        decoration: BoxDecoration(
+          color:  Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // LEFT SIDE CONTENT
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: 0.2,
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: statusColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Text(
-                        widget.status,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    widget.type,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade400,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today,
+                          size: 14, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      Text(
+                        widget.date,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade400,
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.15),
+                      border: Border.all(color: statusColor, width: 1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 8,
+                          width: 8,
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          widget.status,
+                          style: TextStyle(
+                            color: statusColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // RIGHT SIDE IMAGE
+            const SizedBox(width: 16),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 6,
+                      offset: const Offset(2, 2),
                     ),
                   ],
                 ),
-              ],
+                child: Image.asset(
+                  widget.image,
+                  height: 90,
+                  width: 90,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-
-          // RIGHT SIDE IMAGE
-          const SizedBox(width: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              widget.image,
-              height: 100,
-              width: 100,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -41,21 +41,21 @@ class _HomeState extends State<Home> {
       'type': 'Wedding Event',
       'date': '24 Jul 25',
       'status': 'Pending',
-      'image': 'assets/images/wedding_stage.png',
+      'image': 'assets/images/Photoroom.png',
     },
     {
       'title': 'Rahul & Kavya',
       'type': 'Engagement Event',
       'date': '10 May 25',
       'status': 'Confirmed',
-      'image': 'assets/images/wedding_stage.png',
+      'image': 'assets/images/Photoroom.png',
     },
     {
       'title': 'Rohit & Meera',
       'type': 'Reception Event',
       'date': '28 Aug 25',
       'status': 'Completed',
-      'image': 'assets/images/wedding_stage.png',
+      'image': 'assets/images/Photoroom.png',
     },
   ];
 
@@ -111,9 +111,10 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
             CarouselSlider(
@@ -129,7 +130,6 @@ class _HomeState extends State<Home> {
               items: bannerData.map((banner) {
                 final imageUrl = banner["image"] ?? "";
                 final linkUrl = banner["linkUrl"] ?? "";
-
                 return InkWell(
                   onTap: () async {
                     if (linkUrl.isNotEmpty &&
@@ -154,12 +154,10 @@ class _HomeState extends State<Home> {
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
                             const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => const Center(
-                          child: Icon(
-                            Icons.broken_image,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.broken_image,
+                          size: 40,
+                          color: Colors.grey,
                         ),
                       ),
                     ),
@@ -167,7 +165,10 @@ class _HomeState extends State<Home> {
                 );
               }).toList(),
             ),
+
             const SizedBox(height: 10),
+
+            // 🔹 Banner Indicators
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
@@ -186,14 +187,17 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+
             const SizedBox(height: 30),
+
+            // 🔹 Header Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Recent Onboarded",
                   style: TextStyle(
-                    color: Color(0xffFFFFFF),
+                    color: Colors.white,
                     fontFamily: 'Inter',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -207,9 +211,7 @@ class _HomeState extends State<Home> {
                     ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          8,
-                        ), // 👈 adjust radius here
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
@@ -226,29 +228,27 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+
             const SizedBox(height: 16),
-            CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.all(16),
-                  sliver: SliverList.builder(
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      final event = events[index];
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 16),
-                        child: EventCard(
-                          title: event['title']!,
-                          type: event['type']!,
-                          date: event['date']!,
-                          status: event['status']!,
-                          image: event['image']!,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+
+            // 🔹 Events List — Use Expanded + ListView.builder ✅
+            Expanded(
+              child: ListView.builder(
+                itemCount: events.length,
+                itemBuilder: (context, index) {
+                  final event = events[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: EventCard(
+                      title: event['title']!,
+                      type: event['type']!,
+                      date: event['date']!,
+                      status: event['status']!,
+                      image: event['image']!,
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
