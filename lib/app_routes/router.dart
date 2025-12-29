@@ -12,6 +12,8 @@ import 'package:studio_app/presentation/clients_screen.dart';
 import 'package:studio_app/presentation/contactscreen.dart';
 import 'package:studio_app/presentation/dashboard.dart';
 // import '../../../clientapp_studio/lib/pages/notification.dart';
+import 'package:studio_app/presentation/dashboard.dart';
+import 'package:studio_app/presentation/notification.dart';
 import 'package:studio_app/presentation/otp_screen.dart';
 import 'package:studio_app/presentation/upload_pictures.dart';
 import 'package:studio_app/presentation/createclient.dart';
@@ -40,6 +42,14 @@ final GoRouter appRouter = GoRouter(
       path: '/sign_in',
       pageBuilder: (context, state) {
         return buildSlideTransitionPage(SignInScreen(), state);
+      },
+    ),
+    GoRoute(
+      path: '/otp_screen',
+      path: '/dashboard',
+      pageBuilder: (context, state) {
+        return buildSlideTransitionPage(OtpScreen(), state);
+        return buildSlideTransitionPage(Dashboard(), state);
       },
     ),
     GoRoute(

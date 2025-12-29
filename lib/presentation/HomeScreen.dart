@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:studio_app/Components/Shimmers.dart';
 import 'package:studio_app/presentation/ScreenWidgets/EventCard.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
@@ -120,6 +121,8 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
+           // shimmerContainer(double.infinity,SizeConfig.screenHeight * 0.23 , context),
+            //const SizedBox(height: 16),
             CarouselSlider(
               options: CarouselOptions(
                 height: SizeConfig.screenHeight * 0.25,
@@ -244,7 +247,9 @@ class _HomeState extends State<Home> {
                   final event = events[index];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: EventCard(
+                    child:
+                  //    EventCardShimmer()
+                  EventCard(
                       title: event['title']!,
                       type: event['type']!,
                       date: event['date']!,
@@ -260,4 +265,54 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+  Widget EventCardShimmer()
+  {
+    return Container(width: SizeConfig.screenWidth,
+      decoration: BoxDecoration(
+        color:  Color(0xFF1A1A1A),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // LEFT SIDE CONTENT
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                shimmerText(120, 13, context),
+                const SizedBox(height: 6),
+                shimmerText(75, 8, context),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    shimmerContainer(30, 8, context),
+                    const SizedBox(width: 4),
+                    shimmerText(30, 8, context),
+
+                  ],
+                ),
+                const SizedBox(height: 12),
+                shimmerContainer(80, 10, context)
+              ],
+            ),
+          ),
+
+          // RIGHT SIDE IMAGE
+          const SizedBox(width: 16),
+          shimmerContainer(50, 50, context)
+        ],
+      ),
+    );
+  }
+
 }

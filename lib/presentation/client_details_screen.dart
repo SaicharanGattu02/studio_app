@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:studio_app/Components/Shimmers.dart';
 import 'package:studio_app/utils/color_constants.dart';
 import 'package:studio_app/utils/media_query_helper.dart';
 
@@ -16,6 +17,13 @@ class _ClientDetailsScreenState extends State<ClientDetailsScreen> {
   bool pendingSelected = false;
 
   bool completedSelected = false;
+
+  final List<Map<String, String>> events = [
+    {"title": "Engagement", "status": "pending", "icon": "assets/icons/engagement.svg"},
+    {"title": "Haldi", "status": "pending", "icon": "assets/icons/haldi.svg"},
+    {"title": "Wedding", "status": "pending", "icon": "assets/images/wedding.png"},
+    {"title": "Reception", "status": "sent", "icon": "assets/images/reception.png"},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +60,7 @@ class _ClientDetailsScreenState extends State<ClientDetailsScreen> {
             premiumPlanCircle(h, w),
             SizedBox(height: h * 0.05),
             clientTopInfo(h, w),
+          //  clientTopInfoShimmer(h, w),
             SizedBox(height: h * 0.02),
             eventsHeader(h, w,context),
             SizedBox(height: h * 0.02),
@@ -347,6 +356,60 @@ class _ClientDetailsScreenState extends State<ClientDetailsScreen> {
     );
   }
 
+  Widget clientTopInfoShimmer(var h,var w)
+  {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            shimmerText(113, 11, context),
+
+            SizedBox(height: h * 0.0075),
+            shimmerText(60, 8, context),
+            SizedBox(height: h * 0.0075),
+            shimmerText(70, 8, context),
+          ],
+        ),
+
+        Row(
+          children: [
+            Container(
+              width: h * 0.05,
+              height: h * 0.05,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(h * 0.04),
+              ),
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                "assets/icons/call_icon.svg",
+                width: h * 0.022,
+                height: h * 0.022,
+              ),
+            ),
+            SizedBox(width: w * 0.06),
+            Container(
+              width: h * 0.05,
+              height: h * 0.05,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(h * 0.04),
+              ),
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                "assets/icons/whatsapp_icon.svg",
+                width: h * 0.022,
+                height: h * 0.022,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget eventsHeader(double h, double w,var context) {
     return Row(
       children: [
@@ -393,27 +456,49 @@ class _ClientDetailsScreenState extends State<ClientDetailsScreen> {
   }
 
   Widget eventCards(double h, double w) {
-    return ListView(
-      children: [
-        eventCard(h, w, title: "Engagement",
-            status: "pending",
-            icon: "assets/icons/engagement.svg"),
-        SizedBox(height: h * 0.015),
-        eventCard(h, w, title: "Haldi",
-            status: "pending",
-            icon: "assets/icons/haldi.svg"),
-        SizedBox(height: h * 0.015),
-        eventCard(h, w, title: "Wedding",
-            status: "pending",
-            icon: "assets/images/wedding.png"),
-        SizedBox(height: h * 0.015),
-        eventCard(h, w, title: "Reception",
-            status: "sent",
-            icon: "assets/images/reception.png"),
-      ],
+    return ListView.separated(
+      itemCount: events.length,
+      separatorBuilder: (context, _) => SizedBox(height: h * 0.015),
+      itemBuilder: (context, index) {
+        final event = events[index];
+        return //eventCardShimmer(h, w);
+         eventCard(
+          h,
+          w,
+          title: event["title"]!,
+          status: event["status"]!,
+          icon: event["icon"]!,
+        );
+      },
     );
   }
 
+
+  Widget eventCardShimmer(var h , var w)
+  {
+
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(w * 0.03),
+      decoration: ShapeDecoration(
+        color: Color(0xFF222222),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(h * 0.005),
+        ),
+      ),
+      child: Row(
+        children: [
+          shimmerContainer(h * 0.04, h *0.04, context),
+          SizedBox(width: w * 0.03),
+
+          shimmerText(70, 8, context),
+          Spacer(),
+          shimmerContainer(75, 20, context)
+        ],
+      ),
+    );
+  }
   Widget eventCard(double h,
       double w, {
         required String title,
